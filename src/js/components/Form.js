@@ -8,8 +8,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import { addArticle } from "../actions/index";
-import {ENDPOINT} from "../constants/services";
+import {ENDPOINT, ENDPOINT_USER, ENDPOINT_CATEGORIA} from "../constants/services";
 import axios from 'axios';
+import {Link} from "react-router-dom";
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -31,6 +32,9 @@ class ConnectedForm extends Component {
             artigo_imagem: ""
         };
 
+
+
+
         // definir o contexto das funções para que possam aceder à propriedade "this"
         this.handleChange1 = this.handleChange1.bind(this);
         this.handleChange2 = this.handleChange2.bind(this);
@@ -41,6 +45,28 @@ class ConnectedForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount(){
+        fetch(ENDPOINT_USER)
+            .then(res => res.json())
+            .then((utilizadores)=> {
+
+
+                fetch(ENDPOINT_CATEGORIA)
+                    .then(res => res.json())
+                    .then((categorias)=> {
+
+
+                        console.log('categoria é: ', categorias);
+                        //const user_id = utilizadores.user_id;
+                        this.setState({
+                            categorias, utilizadores
+                        })
+                    })
+            });
+
+
+
+    }
 
 
     // sempre que existir uma alteração no campo de texto, atualiza a state local do componente
@@ -159,6 +185,14 @@ class ConnectedForm extends Component {
     }
 
     render() {
+        if(!this.state.utilizadores) return null;
+        console.log(this.state.utilizadores);
+
+        const utilizadores = this.state.utilizadores;//array dos utilizadores presentes na base de dados
+        const categorias = this.state.categorias;//array das categorias presentes na base de dados
+
+
+
         // obter o title presente no state local do componente
         const { title } = this.state.title;
         const { data } = this.state.data;
@@ -207,10 +241,12 @@ class ConnectedForm extends Component {
                         onChange={this.handleChange4} // associar o evento "onChange" à função "handleChange"
                     >
                         <option></option>
-                        <option value={1}>Carolina</option>
-                        <option value={2}>Gabriel</option>
-                        <option value={3}>Rúben</option>
-                        <option value={4}>Graciana</option>
+
+                        {utilizadores.map(utilizador => (
+                            <option value={utilizador.id}>{utilizador.name}</option>
+                            // para cada item dentro da array articles, criar um título e um botão delete
+                        ))}
+
                     </select>
                     <label htmlFor="data">Categoria</label>
                     <select
@@ -221,10 +257,13 @@ class ConnectedForm extends Component {
                         onChange={this.handleChange5} // associar o evento "onChange" à função "handleChange"
                     >
                         <option></option>
-                        <option value={1}>Criminal</option>
-                        <option value={1}>Científico</option>
-                        <option value={1}>Desportivo</option>
-                        <option value={1}>Artístico</option>
+
+
+                        {categorias.map(cat => (
+                            <option value={cat.id}>{cat.categoria}</option>
+                            // para cada item dentro da array articles, criar um título e um botão delete
+                        ))}
+
                     </select>
                     <label htmlFor="data">Imagem</label>
                     <input
@@ -234,6 +273,7 @@ class ConnectedForm extends Component {
                         onChange={this.handleChange6} // associar o evento "onChange" à função "handleChange"
                     />
                 </div>
+
                 <button type="submit" className="btn btn-success btn-lg" >
                     SAVE
                 </button>

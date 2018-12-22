@@ -3,6 +3,10 @@ import {withRouter} from 'react-router-dom';
 
 import { ENDPOINT, ENDPOINT_USER, ENDPOINT_CATEGORIA } from '../constants/services';
 
+var imageStyle = {
+    height:250,
+};
+
 class MasterDetail extends React.Component {
 
     //podes fazrr isto no construtor(como o professor mostrou) ou assim
@@ -92,12 +96,12 @@ class MasterDetail extends React.Component {
 
 
         <div className="row mt-5">
-            <div className="col-md-8 offset-md-1">
+            <div className="col-md-4 offset-md-1">
             <div className="card">
                 <div className="card-header">
                     {titulo} &nbsp;&nbsp; &nbsp;&nbsp;  {data}
                 </div>
-                <img className="card-img-top" src={url} height="150" width="100" alt="Card image cap"></img>
+                <img className="card-img-top" src={url} height="" width="100" alt="Card image cap" style={imageStyle}></img>
                     <div className="card-body">
                         <p className="card-text">{descricao}</p>
 

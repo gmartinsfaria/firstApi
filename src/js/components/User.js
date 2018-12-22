@@ -1,15 +1,43 @@
-import React from "react";
-import List from "./List";
-import Form from "./Form";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import {AUTH_ENDPOINT} from "../constants/services";
 
-const User = () => {
-    return(
-        <div className="row mt-5">
-            <div className="col-md-4 offset-md-1">
-                <h2>User</h2>
-            </div>
-        </div>
-    );
+const mapStateToProps = state => {
+    return{
+        token: state.auth,
+        user: state.user,
+    };
 };
+
+class ConnectedUser extends Component{
+
+    constructor(){
+        super();
+    }
+
+    render() {
+
+        if (this.props.user.length > 0){
+            return(
+
+                console.log(this.props.user[0].data.name)
+                //<li  className="nav-item nav-link active">
+                //    {this.props.user[0].data.name}
+                //</li>
+            );
+        } else {
+            return(
+
+                <a  className="nav-link" href={ AUTH_ENDPOINT }>Login</a>
+            //console.log(this.state.token)
+
+            )
+        }
+
+    }
+
+}
+
+const User = connect(mapStateToProps)(ConnectedUser);
 
 export default User;

@@ -3,6 +3,7 @@ import List from "./List";
 import Form from "./Form";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+
 var divStyle = {
     height: 500
 };
@@ -29,7 +30,7 @@ const About = () => {
                     <p>Criado por e para os alunos da UA</p>
 
 
-                    <Link class="nav-link" to="/about/">
+                    <Link className="nav-link" to="/about/">
                         <button type="button" className="btn btn-light" style={buttonStyle}>Ver artigos</button>
                     </Link>
 
